@@ -5,7 +5,7 @@ let users = [];
 export const getUsers = (req, res)=>{
     
     res.send(users);
-    console.log('/users');
+
 };
 
 export const createUser = (req, res)=>{
@@ -17,14 +17,11 @@ export const createUser = (req, res)=>{
 export const getUserByID = (req, res)=>{
     const singleUser = users.filter((user)=>user.id === req.params.id);
     res.send(singleUser);
-    console.log(singleUser);
 }
 
 export const deleteUser = (req, res)=>{
     users = users.filter((user)=>user.id !== req.params.id);
-
     res.send('user deleted');
-    console.log(users);
 }
 
 export const updateUser = (req, res)=>{
