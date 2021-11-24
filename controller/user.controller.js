@@ -27,9 +27,10 @@ export const deleteUser = (req, res)=>{
 export const updateUser = (req, res)=>{
     const user = users.find((user)=>user.id === req.params.id);
 
-    console.log(user);
+    // console.log(user);
     user.name = req.body.name;
     user.contact = req.body.contact;
+    user.email = req.body.email;
 
     res.send('User Updated');
 }
