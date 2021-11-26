@@ -1,4 +1,5 @@
 import {v4 as uuid} from 'uuid';
+import db from "../config/db.js"
 
 let users = [];
 
@@ -8,10 +9,22 @@ export const getUsers = (req, res)=>{
 
 };
 
-export const createUser = (req, res)=>{
-    const user = req.body;
-    users.push({...user, id: uuid()});
-    res.send('User Added Successfully');
+export const createUser = async (req, res)=>{
+    // const user = req.body;
+    // users.push({...user, id: uuid()});
+    try {
+        const response = await db('users').insert({
+            id: uuid(),
+            name: req.body.name,
+            email: req.body.email,
+            contact: req.body.contact,
+        });
+        console.log('insert succes: ', response);
+        res.send('User Added Successfully');
+    } catch (error) {
+        console.log('error: ', error);
+    }
+    
 };
 
 export const getUserByID = (req, res)=>{
