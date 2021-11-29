@@ -1,7 +1,46 @@
 import {v4 as uuid} from 'uuid';
 import db from "../config/db.js"
+import {hash, compare} from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 let users = [];
+
+export const loginUser = async (req, res)=>{
+    console.log('loginUser runs')
+    const checkEmail = await db('users').where('email', req.body.email).first();
+    if (!checkEmail) {
+        console.log('empty checkEmail: ', checkEmail);
+    }else{
+        console.log('checkemail not empty', checkEmail)
+        try {
+            const checkPassword = await compare(req.body.password, checkEmail.name);
+            if (!checkPassword) {
+                console.log('password not correct', checkPassword);
+            }else{
+                console.log('login success');
+                // res.cookie("jid", "test");
+                res.cookie(
+                    "jid", 
+                    jwt.sign({userId: checkEmail.id},
+                        "secretRefresh", {expiresIn: "2min"}), 
+                    {
+                        httpOnly: true,
+                        
+                    }
+                );
+
+                return res.json({
+                    token: jwt.sign({userId: checkEmail.id},
+                        "secretAccess", {expiresIn: "2min"}
+                    ),
+                 });
+             }
+        } catch (error) {
+            console.log('check pass error', error);
+        }
+        
+    }
+}
 
 export const getUsers = async (req, res)=>{
     
@@ -15,10 +54,11 @@ export const getUsers = async (req, res)=>{
 export const createUser = async (req, res)=>{
     // const user = req.body;
     // users.push({...user, id: uuid()});
+    const hashedPassword = await hash(req.body.name, 10);
     try {
         const response = await db('users').insert({
             id: uuid(),
-            name: req.body.name,
+            name: hashedPassword,
             email: req.body.email,
             contact: req.body.contact,
         });
@@ -31,7 +71,7 @@ export const createUser = async (req, res)=>{
 };
 
 export const getUserByID = async (req, res)=>{
-    const singleUser = users.filter((user)=>user.id === req.params.id);
+    // const singleUser = users.filter((user)=>user.id === req.params.id);
     const singleUserReponse = await db('users').where('id', req.params.id)
     res.send(singleUserReponse);
 }
