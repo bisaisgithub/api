@@ -2,8 +2,8 @@ import express from 'express';
 import userRouter from '../routes/user.routes.js';
 import cors from 'cors';
 
-var whitelist = ['http://127.0.0.1:3000', 'http://localhost:8080', 'http://localhost:3000', 'http://172.16.0.104:3000',
-                'http://172.16.0.103*',
+var whitelist = ['http://127.0.0.1:3000', 'http://localhost:3000', 'http://172.16.0.104:3000',
+                'http://172.16.0.100:3000',
 /** other domains if any */ ]
 var corsOptions = {
   credentials: true,
