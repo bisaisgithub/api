@@ -31,7 +31,7 @@ export const loginUser = async (req, res)=>{
                 );
 
                 return res.json({
-                    token: jwt.sign({userId: checkEmail.id},
+                    accessToken: jwt.sign({userId: checkEmail.id},
                         "secretAccess", {expiresIn: "2min"}
                     ),
                  });
@@ -48,8 +48,9 @@ export const getUsers = async (req, res)=>{
     const response = await db('users').orderBy('created_at', 'desc');
     // console.log('response gerusers: ', response);
     
-    res.send(response);
+    // res.send(response);
 
+    res.json(response);
 };
 
 export const createUser = async (req, res)=>{
@@ -103,4 +104,28 @@ export const updateUser = async (req, res)=>{
     // user.email = req.body.email;
 
     res.send('User Updated');
+}
+
+export const refreshToken = async (req, res)=>{
+    const token = req.cookies.jid;
+    if (!token) {
+        return res.json({ok: false, accessToken: ''});
+    }
+    const payload = null;
+    try {
+        payload = jwt.verify(token, 'secretRefresh')
+    } catch (error) {
+        console.log(error);
+        return res.json({ok: false, accessToken: ''});
+        
+    }
+
+    const user = await db('users').where('id', payload.userId);
+    if (!user) {
+        return res.json({ok: false, accessToken: ''});
+    }
+
+    return res.json({ok: true, accessToken: jwt.sign({userId: checkEmail.id},
+        "secretAccess", {expiresIn: "2min"}
+    )})
 }

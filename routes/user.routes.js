@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { createUser, deleteUser, getUserByID, getUsers, loginUser, updateUser } from "../controller/user.controller.js";
+import { createUser, deleteUser, getUserByID, getUsers, loginUser, refreshToken, updateUser } from "../controller/user.controller.js";
+
 
 const userRouter = Router();
 
@@ -15,8 +16,6 @@ userRouter.put('/user/:id', updateUser);
 
 userRouter.post('/login', loginUser);
 
-userRouter.post('/refresh_token', (req)=>{
-    console.log(req.headers);
-});
+userRouter.post('/refresh_token', refreshToken);
 
 export default userRouter;
