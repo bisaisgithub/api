@@ -8,6 +8,7 @@ let users = [];
 export const loginUser = async (req, res)=>{
     console.log('loginUser runs')
     const checkEmail = await db('users').where('email', req.body.email).first();
+    console.log(req.body.email);
     if (!checkEmail) {
         console.log('empty checkEmail: ', checkEmail);
     }else{
