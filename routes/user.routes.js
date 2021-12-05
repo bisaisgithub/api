@@ -15,4 +15,8 @@ userRouter.put('/user/:id', updateUser);
 
 userRouter.post('/login', loginUser);
 
+userRouter.post('/refresh_token', (req)=>{
+    console.log(req.headers);
+});
+
 export default userRouter;
