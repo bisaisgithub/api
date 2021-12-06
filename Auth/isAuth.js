@@ -15,6 +15,7 @@ export const isAuth = (req, res, next) => {
     } catch (error) {
         console.log(error);
     }
+    
     console.log('payload ', payload);
     return next();
 }

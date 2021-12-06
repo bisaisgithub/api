@@ -107,6 +107,7 @@ export const updateUser = async (req, res)=>{
 }
 
 export const refreshToken = async (req, res)=>{
+    console.log('cookies', req.cookies);
     const token = req.cookies.jid;
     if (!token) {
         return res.json({ok: false, accessToken: ''});
