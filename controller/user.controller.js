@@ -12,7 +12,7 @@ export const loginUser = async (req, res)=>{
     if (!checkEmail) {
         console.log('empty checkEmail: ', checkEmail);
     }else{
-        console.log('checkemail not empty', checkEmail)
+        // console.log('checkemail not empty', checkEmail)
         try {
             const checkPassword = await compare(req.body.password, checkEmail.name);
             if (!checkPassword) {
@@ -107,8 +107,8 @@ export const updateUser = async (req, res)=>{
 }
 
 export const refreshToken = async (req, res)=>{
-    console.log('cookies', req.cookies);
     const token = req.cookies.jid;
+    console.log(token);
     if (!token) {
         return res.json({ok: false, accessToken: ''});
     }
@@ -116,9 +116,10 @@ export const refreshToken = async (req, res)=>{
     try {
         payload = jwt.verify(token, 'secretRefresh')
     } catch (error) {
-        console.log(error);
+        res.clearCookie("jid");
+        console.log('catch error: ',error);
         return res.json({ok: false, accessToken: ''});
-        
+       
     }
 
     const user = await db('users').where('id', payload.userId);

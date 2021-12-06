@@ -16,6 +16,6 @@ userRouter.put('/user/:id', updateUser);
 
 userRouter.post('/login', loginUser);
 
-userRouter.post('/refresh_token', refreshToken);
+userRouter.get('/refresh_token', refreshToken);
 
 export default userRouter;
