@@ -2,7 +2,7 @@ import {verify} from 'jsonwebtoken';
 
 
 
-export const isAuth = (req, res, next) => {
+export const 6th = (req, res, next) => {
     const authorization = req.headers['authorization'];
 
     if (!authorization) {
