@@ -127,7 +127,9 @@ export const refreshToken = async (req, res)=>{
         return res.json({ok: false, accessToken: ''});
     }
 
-    return res.json({ok: true, accessToken: jwt.sign({userId: checkEmail.id},
-        "secretAccess", {expiresIn: "2min"}
-    )})
+    return res.json({
+        ok: true, 
+        accessToken: jwt.sign({userId: checkEmail.id},
+        "secretAccess", {expiresIn: "2min"} )
+    })
 }
